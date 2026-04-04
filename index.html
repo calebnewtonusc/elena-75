@@ -58,7 +58,7 @@
     #hero-img {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
-      object-fit: cover; object-position: center top;
+      object-fit: cover; object-position: center 25%;
     }
     #hero-overlay {
       position: absolute; inset: 0;
@@ -223,6 +223,16 @@
       opacity: 0; transition: opacity 0.2s;
     }
     .masonry-item:hover::after { opacity: 1; }
+    .masonry-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 10px 12px;
+      background: linear-gradient(to top, rgba(8,7,5,0.92) 0%, transparent 100%);
+      font-size: 0.72rem; color: rgba(240,235,228,0.85); line-height: 1.4;
+      opacity: 0; transform: translateY(4px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 2;
+    }
+    .masonry-item:hover .masonry-caption { opacity: 1; transform: translateY(0); }
 
     /* ── PILLARS ── */
     #pillars { background: #080705; }
@@ -376,14 +386,14 @@
 
   <div class="story-grid">
     <div class="story-photo fade">
-      <img src="images/085_634831103_10163672959438912_2774520005342656922_n.jpg" alt="Elena" />
+      <img src="images/46436413_1971863063117048_5727920148615004160_n.jpg" alt="Elena" />
       <div class="story-photo-caption">Elena Ortencio Dejesus-Souza</div>
     </div>
     <div class="story-text fade" style="transition-delay:0.12s">
       <p><strong>Born April 1, 1951</strong> in Manila, Philippines, Elena grew up shaped by the warmth of Filipino culture, a deep Catholic faith, and a love of people that never left her.</p>
       <p>She pursued her degree at <strong>Saint Paul University Quezon City</strong>, where she formed bonds with classmates that would span continents and decades. In 2026, she was still having lunch with them in Manila.</p>
       <p>Elena built her life in <strong>Tulare, California</strong>, where she worked at the County of Tulare, raised her family, and planted roots in her church community at <strong>St. Rita Catholic Church</strong>.</p>
-      <p>She married <strong>Bob Souza</strong> and became a grandmother to Joshua, Ava, River, and Olive. She shows up to every performance, every award, every milestone. Every single time.</p>
+      <p>She married <strong>Bob Souza</strong> and raised two children: daughter <strong>Cathy</strong> and son <strong>Randy</strong>. Through them, she became a grandmother to six: Joshua, Ava, Caleb, and Selah (Cathy's), and River and Olive (Randy's). She shows up to every performance, every award, every milestone. Every single time.</p>
       <p>At 75, she is still blowing out Tiramisu birthday cake at Wednesday night prayer meetings. Still going to Mass on Palm Sunday. Still treating her best friend to lunch. Still the center of every room she walks into.</p>
     </div>
   </div>
@@ -462,7 +472,7 @@
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
       </div>
       <div class="pillar-title">Family</div>
-      <div class="pillar-body">Husband Bob. Grandchildren Joshua, Ava, River, and Olive. She misses nothing. Every performance, every award, every birthday. She is always there.</div>
+      <div class="pillar-body">Husband Bob. Six grandchildren: Joshua, Ava, River, Olive, Caleb, and Selah. She misses nothing. Every performance, every award, every birthday. She is always there.</div>
     </div>
     <div class="pillar fade" style="transition-delay:0.16s">
       <div class="pillar-icon">
@@ -1429,15 +1439,28 @@ var photos = [
   'images/97984165_2759048220985856_6012696426167926784_n.jpg',
 ];
 var g = document.getElementById('gallery');
-photos.forEach(function(src) {
-  var d = document.createElement('div');
-  d.className = 'masonry-item';
-  var img = document.createElement('img');
-  img.src = src; img.loading = 'lazy'; img.alt = 'Elena';
-  img.onerror = function() { d.remove(); };
-  d.onclick = function() { openLb(src); };
-  d.appendChild(img); g.appendChild(d);
-});
+fetch('captions.json')
+  .then(function(r) { return r.json(); })
+  .catch(function() { return {}; })
+  .then(function(caps) {
+    photos.forEach(function(src) {
+      var filename = src.split('/').pop();
+      var d = document.createElement('div');
+      d.className = 'masonry-item';
+      var img = document.createElement('img');
+      img.src = src; img.loading = 'lazy'; img.alt = 'Elena';
+      img.onerror = function() { d.remove(); };
+      d.onclick = function() { openLb(src); };
+      d.appendChild(img);
+      if (caps[filename] && caps[filename].caption) {
+        var cap = document.createElement('div');
+        cap.className = 'masonry-caption';
+        cap.textContent = caps[filename].caption;
+        d.appendChild(cap);
+      }
+      g.appendChild(d);
+    });
+  });
 </script>
 </body>
 </html>

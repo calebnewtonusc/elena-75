@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elena Ortencio Dejesus-Souza - 75 Years of Love</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { -webkit-font-smoothing: antialiased; }
+    body { font-family: 'Inter', sans-serif; background: #0c0a09; color: #f5f0eb; }
+    .font-display { font-family: 'Playfair Display', serif; }
+
+    /* Scroll-aware navbar */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      backdrop-filter: blur(16px); background: rgba(12,10,9,0.88);
+      border-bottom: 1px solid rgba(212,175,100,0.15);
+      transform: translateY(-100%); opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    /* Gold gradient text */
+    .gold-text {
+      background: linear-gradient(135deg, #d4af64 0%, #f5d78e 50%, #b8860b 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* Hero */
+    .hero-bg {
+      background: radial-gradient(ellipse at 60% 20%, rgba(180,130,50,0.18) 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, rgba(120,80,30,0.12) 0%, transparent 50%),
+                  #0c0a09;
+    }
+
+    /* Timeline */
+    .timeline-line {
+      position: absolute; left: 50%; top: 0; bottom: 0;
+      width: 1px; background: linear-gradient(to bottom, transparent, rgba(212,175,100,0.4), transparent);
+      transform: translateX(-50%);
+    }
+
+    /* Photo masonry */
+    .photo-grid {
+      columns: 2; column-gap: 12px;
+    }
+    @media (min-width: 640px) { .photo-grid { columns: 3; } }
+    @media (min-width: 1024px) { .photo-grid { columns: 4; } }
+    .photo-item {
+      break-inside: avoid; margin-bottom: 12px;
+      border-radius: 12px; overflow: hidden;
+      border: 1px solid rgba(212,175,100,0.15);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      cursor: pointer;
+    }
+    .photo-item:hover { transform: scale(1.02); border-color: rgba(212,175,100,0.5); }
+    .photo-item img { display: block; width: 100%; }
+
+    /* Stat cards */
+    .stat-card {
+      background: rgba(212,175,100,0.06);
+      border: 1px solid rgba(212,175,100,0.2);
+      border-radius: 16px; padding: 24px;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .stat-card:hover { border-color: rgba(212,175,100,0.4); background: rgba(212,175,100,0.1); }
+
+    /* Post card */
+    .post-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 24px;
+      transition: border-color 0.2s ease;
+    }
+    .post-card:hover { border-color: rgba(212,175,100,0.3); }
+
+    /* Lightbox */
+    #lightbox {
+      display: none; position: fixed; inset: 0; z-index: 100;
+      background: rgba(0,0,0,0.92); backdrop-filter: blur(8px);
+      align-items: center; justify-content: center;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 12px; }
+
+    /* Reading progress */
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 2px; z-index: 200;
+      background: linear-gradient(90deg, #d4af64, #f5d78e);
+      transform-origin: left;
+      animation: grow-bar linear; animation-timeline: scroll(root);
+    }
+    @keyframes grow-bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+    /* Reveal animation */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Grain overlay */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+    }
+  </style>
+</head>
+<body class="overflow-x-hidden">
+
+  <!-- Reading progress -->
+  <div class="progress-bar"></div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
+  <!-- Navbar -->
+  <nav id="navbar">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <span class="font-display text-lg gold-text font-semibold">Elena</span>
+      <div class="flex items-center gap-6 text-sm text-stone-400">
+        <a href="#story" class="hover:text-amber-300 transition-colors">Story</a>
+        <a href="#timeline" class="hover:text-amber-300 transition-colors">Timeline</a>
+        <a href="#memories" class="hover:text-amber-300 transition-colors">Memories</a>
+        <a href="#photos" class="hover:text-amber-300 transition-colors">Photos</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero-bg min-h-screen flex items-center relative overflow-hidden">
+    <!-- Decorative circles -->
+    <div class="absolute top-20 right-10 w-96 h-96 rounded-full bg-amber-900/10 blur-3xl"></div>
+    <div class="absolute bottom-20 left-10 w-64 h-64 rounded-full bg-amber-800/8 blur-3xl"></div>
+
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 w-full py-32 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <!-- Left: Text -->
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-medium mb-6">
+          April 1, 1951 — April 1, 2026
+        </div>
+        <h1 class="font-display text-6xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6">
+          <span class="gold-text">75 Years</span><br />
+          <span class="text-stone-100">of Grace</span>
+        </h1>
+        <p class="text-stone-400 text-xl leading-relaxed mb-4 max-w-lg">
+          From the streets of Manila to the heart of Tulare, California. A life built on faith, family, and boundless love.
+        </p>
+        <p class="font-display italic text-amber-300/80 text-lg mb-10">
+          Honoring Elena Ortencio Dejesus-Souza
+        </p>
+        <div class="flex items-center gap-4">
+          <a href="#story" class="px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white font-semibold rounded-xl transition-all duration-200 cursor-pointer shadow-lg shadow-amber-500/20">
+            Read Her Story
+          </a>
+          <a href="#photos" class="px-6 py-3 border border-stone-700 hover:border-amber-500/50 text-stone-300 hover:text-white font-medium rounded-xl transition-all duration-200 cursor-pointer">
+            View Photos
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Hero photo + stat cards -->
+      <div class="relative">
+        <div class="relative rounded-3xl overflow-hidden border border-amber-500/20 shadow-2xl" style="max-height:600px;">
+          <img src="images/071_487239469_3629487270687944_8316863897215875711_n.jpg" alt="Elena Dejesus-Souza" class="w-full object-cover" style="max-height:600px; object-position:top;" />
+          <div class="absolute inset-0 bg-gradient-to-t from-stone-950/60 via-transparent to-transparent"></div>
+        </div>
+
+        <!-- Floating stat cards -->
+        <div class="absolute -bottom-6 -left-6 bg-stone-900/90 backdrop-blur-md border border-amber-500/25 rounded-2xl p-4 shadow-xl">
+          <p class="text-3xl font-bold gold-text font-display">75</p>
+          <p class="text-stone-400 text-sm">Beautiful Years</p>
+        </div>
+        <div class="absolute -top-4 -right-4 bg-stone-900/90 backdrop-blur-md border border-amber-500/25 rounded-2xl p-4 shadow-xl">
+          <p class="text-3xl font-bold gold-text font-display">300+</p>
+          <p class="text-stone-400 text-sm">Friends who love her</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS STRIP -->
+  <section class="py-16 border-y border-stone-800/60">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="stat-card text-center reveal">
+          <p class="font-display text-4xl font-bold gold-text">75</p>
+          <p class="text-stone-400 text-sm mt-1">Years Young</p>
+        </div>
+        <div class="stat-card text-center reveal" style="transition-delay:0.1s">
+          <p class="font-display text-4xl font-bold gold-text">4+</p>
+          <p class="text-stone-400 text-sm mt-1">Grandchildren</p>
+        </div>
+        <div class="stat-card text-center reveal" style="transition-delay:0.2s">
+          <p class="font-display text-4xl font-bold gold-text">2</p>
+          <p class="text-stone-400 text-sm mt-1">Countries Called Home</p>
+        </div>
+        <div class="stat-card text-center reveal" style="transition-delay:0.3s">
+          <p class="font-display text-4xl font-bold gold-text">1</p>
+          <p class="text-stone-400 text-sm mt-1">Extraordinary Life</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section id="story" class="py-24 md:py-36">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <p class="text-amber-400 text-sm font-medium tracking-widest uppercase mb-3">Who She Is</p>
+        <h2 class="font-display text-5xl md:text-6xl font-bold text-stone-100 mb-6">Her Story</h2>
+        <div class="w-16 h-px bg-amber-500/40 mx-auto"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+        <div class="space-y-6 reveal">
+          <div class="post-card">
+            <p class="text-amber-400 text-xs font-medium uppercase tracking-widest mb-2">The Beginning</p>
+            <p class="text-stone-300 leading-relaxed">
+              Born on April 1, 1951, in the vibrant city of Manila, Philippines, Elena grew up shaped by the deep warmth of Filipino culture. She pursued her education at Saint Paul University Quezon City, forming lifelong bonds with her classmates that would span continents and decades.
+            </p>
+          </div>
+          <div class="post-card">
+            <p class="text-amber-400 text-xs font-medium uppercase tracking-widest mb-2">Faith</p>
+            <p class="text-stone-300 leading-relaxed">
+              Faith is the cornerstone of Elena's life. She is a devoted member of St. Rita Catholic Church in Tulare, CA and has long been part of prayer meetings, Wednesday night fellowships, and her church community. Her faith isn't a Sunday thing. It's how she lives every day.
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-6 reveal" style="transition-delay:0.15s">
+          <div class="post-card">
+            <p class="text-amber-400 text-xs font-medium uppercase tracking-widest mb-2">A New Home</p>
+            <p class="text-stone-300 leading-relaxed">
+              Elena made her life in Tulare, California, where she built a career at the County of Tulare. From Manila to the Central Valley, she carried her roots with her while building something entirely new.
+            </p>
+          </div>
+          <div class="post-card">
+            <p class="text-amber-400 text-xs font-medium uppercase tracking-widest mb-2">Family First</p>
+            <p class="text-stone-300 leading-relaxed">
+              Married to Bob Souza, Elena is the proud grandmother of Joshua, Ava, River, Olive, and more. Her grandchildren are the joy of her life. She shows up to every performance, every awards ceremony, every birthday. Every single time.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section id="timeline" class="py-24 bg-stone-950/50">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <p class="text-amber-400 text-sm font-medium tracking-widest uppercase mb-3">75 Years</p>
+        <h2 class="font-display text-5xl md:text-6xl font-bold text-stone-100 mb-6">A Life Timeline</h2>
+        <div class="w-16 h-px bg-amber-500/40 mx-auto"></div>
+      </div>
+
+      <div class="relative">
+        <div class="timeline-line hidden md:block"></div>
+
+        <div class="space-y-10">
+
+          <!-- 1951 -->
+          <div class="md:grid md:grid-cols-2 md:gap-10 items-center reveal">
+            <div class="md:text-right mb-4 md:mb-0">
+              <span class="font-display text-4xl gold-text font-bold">1951</span>
+              <h3 class="text-xl font-semibold text-stone-100 mt-1">Born in Manila</h3>
+              <p class="text-stone-400 mt-2">April 1, 1951. Elena enters the world in Manila, Philippines. A day of joy that would reverberate for 75 years.</p>
+            </div>
+            <div class="md:pl-10">
+              <div class="w-3 h-3 rounded-full bg-amber-500 hidden md:block absolute left-1/2 transform -translate-x-1/2 mt-3"></div>
+              <img src="images/003_493606877_3656457561324248_5966137836989532371_n.jpg" alt="Early life" class="rounded-2xl border border-stone-800 shadow-lg w-full object-cover max-h-48" />
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div class="md:grid md:grid-cols-2 md:gap-10 items-center reveal">
+            <div class="md:order-2 mb-4 md:mb-0">
+              <span class="font-display text-4xl gold-text font-bold">Education</span>
+              <h3 class="text-xl font-semibold text-stone-100 mt-1">Saint Paul University Quezon City</h3>
+              <p class="text-stone-400 mt-2">Elena earned her degree at Saint Paul University QC, forming friendships that would last a lifetime and span the globe.</p>
+            </div>
+            <div class="md:order-1 md:pr-10 md:text-right">
+              <div class="post-card h-full flex items-center">
+                <p class="font-display italic text-stone-300 text-lg">"Her BSC classmates still get together for lunch decades later. Some bonds don't break."</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Moving to USA -->
+          <div class="md:grid md:grid-cols-2 md:gap-10 items-center reveal">
+            <div class="md:text-right mb-4 md:mb-0">
+              <span class="font-display text-4xl gold-text font-bold">USA</span>
+              <h3 class="text-xl font-semibold text-stone-100 mt-1">Tulare, California</h3>
+              <p class="text-stone-400 mt-2">Elena planted roots in Tulare, CA, building a life with her family while working at the County of Tulare and staying deeply connected to her church community.</p>
+            </div>
+            <div class="md:pl-10">
+              <img src="images/025_660374748_3959640984339236_4826847005298686982_n.jpg" alt="Life in California" class="rounded-2xl border border-stone-800 shadow-lg w-full object-cover max-h-48" />
+            </div>
+          </div>
+
+          <!-- Family -->
+          <div class="md:grid md:grid-cols-2 md:gap-10 items-center reveal">
+            <div class="md:order-2 mb-4 md:mb-0">
+              <span class="font-display text-4xl gold-text font-bold">Family</span>
+              <h3 class="text-xl font-semibold text-stone-100 mt-1">Grandchildren</h3>
+              <p class="text-stone-400 mt-2">Joshua, Ava, River, Olive. Each one a chapter in her greatest story. Elena is at every performance, every award, every milestone.</p>
+            </div>
+            <div class="md:order-1 md:pr-10">
+              <img src="images/043_661015324_3959641021005899_1513635274944992612_n.jpg" alt="Family" class="rounded-2xl border border-stone-800 shadow-lg w-full object-cover max-h-48" />
+            </div>
+          </div>
+
+          <!-- 2026 -->
+          <div class="md:grid md:grid-cols-2 md:gap-10 items-center reveal">
+            <div class="md:text-right mb-4 md:mb-0">
+              <span class="font-display text-4xl gold-text font-bold">2026</span>
+              <h3 class="text-xl font-semibold text-stone-100 mt-1">75 and Still Shining</h3>
+              <p class="text-stone-400 mt-2">Tiramisu cake. Wednesday night prayer. Sunday Mass. Lunch with best friends. Golf course views in Three Rivers. This is Elena at 75.</p>
+            </div>
+            <div class="md:pl-10">
+              <img src="images/085_634831103_10163672959438912_2774520005342656922_n.jpg" alt="Elena today" class="rounded-2xl border border-stone-800 shadow-lg w-full object-cover max-h-48" />
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMORIES / POSTS -->
+  <section id="memories" class="py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <p class="text-amber-400 text-sm font-medium tracking-widest uppercase mb-3">In Her Own Words</p>
+        <h2 class="font-display text-5xl md:text-6xl font-bold text-stone-100 mb-6">Moments from Her Life</h2>
+        <div class="w-16 h-px bg-amber-500/40 mx-auto"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        <div class="post-card reveal" style="transition-delay:0.05s">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+            <span class="text-amber-400 text-xs font-medium">Birthday 2026</span>
+          </div>
+          <p class="font-display italic text-stone-200 text-lg leading-relaxed">"Before the end of the day of my birthday. Since it is a Wednesday night, as usual we have our prayer meeting. I get to blow my Tiramisu birthday cake (my favorite) with my brothers and sisters in Christ."</p>
+        </div>
+
+        <div class="post-card reveal" style="transition-delay:0.10s">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+            <span class="text-amber-400 text-xs font-medium">Birthday Lunch</span>
+          </div>
+          <p class="font-display italic text-stone-200 text-lg leading-relaxed">"My best friend Angela Ledbetter and her husband Pastor Jerry Ledbetter treated me and Bob for a lunch at Ard farkles restaurant in Three Rivers, CA. Birthday gift with a beautiful frame of the gift of the Holy Spirit."</p>
+        </div>
+
+        <div class="post-card reveal" style="transition-delay:0.15s">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+            <span class="text-amber-400 text-xs font-medium">Family Celebration</span>
+          </div>
+          <p class="font-display italic text-stone-200 text-lg leading-relaxed">"Celebrating my birthday. Lunch at La Piazza Italian restaurant in Tulare, CA. With my husband Bob and his daughter Deb."</p>
+        </div>
+
+        <div class="post-card reveal" style="transition-delay:0.20s">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+            <span class="text-amber-400 text-xs font-medium">Thanksgiving 2025</span>
+          </div>
+          <p class="font-display italic text-stone-200 text-lg leading-relaxed">"Thanksgiving 2025 with my big happy family (children and grandchildren)."</p>
+        </div>
+
+        <div class="post-card reveal" style="transition-delay:0.25s">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+            <span class="text-amber-400 text-xs font-medium">Granddaughter Ava</span>
+          </div>
+          <p class="font-display italic text-stone-200 text-lg leading-relaxed">"My granddaughter Ava. San Marino high school dance performance. Ava (16, Junior)."</p>
+        </div>
+
+        <div class="post-card reveal" style="transition-delay:0.30s">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+            <span class="text-amber-400 text-xs font-medium">Grandson Joshua</span>
+          </div>
+          <p class="font-display italic text-stone-200 text-lg leading-relaxed">"My grandson Joshua today and 10 years ago."</p>
+        </div>
+
+        <div class="post-card reveal" style="transition-delay:0.35s">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+            <span class="text-amber-400 text-xs font-medium">Granddaughter Olive</span>
+          </div>
+          <p class="font-display italic text-stone-200 text-lg leading-relaxed">"My granddaughter Olive (10 years old) got the Hawk award, number one in her class."</p>
+        </div>
+
+        <div class="post-card reveal" style="transition-delay:0.40s">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+            <span class="text-amber-400 text-xs font-medium">Grandson River</span>
+          </div>
+          <p class="font-display italic text-stone-200 text-lg leading-relaxed">"My grandson River (7 years old). Principal honor award in school."</p>
+        </div>
+
+        <div class="post-card reveal" style="transition-delay:0.45s">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+            <span class="text-amber-400 text-xs font-medium">Manila Reunion 2026</span>
+          </div>
+          <p class="font-display italic text-stone-200 text-lg leading-relaxed">"Lunchdate, Feb 15, 2026 with St. Paul College QC BSC classmates at The Mesa Restaurant, Shangri-La."</p>
+        </div>
+
+        <div class="post-card reveal" style="transition-delay:0.50s">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+            <span class="text-amber-400 text-xs font-medium">Palm Sunday</span>
+          </div>
+          <p class="font-display italic text-stone-200 text-lg leading-relaxed">"Palm Sunday. St Rita Catholic Church, Tulare, CA."</p>
+        </div>
+
+        <div class="post-card reveal" style="transition-delay:0.55s">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+            <span class="text-amber-400 text-xs font-medium">Christmas 2025</span>
+          </div>
+          <p class="font-display italic text-stone-200 text-lg leading-relaxed">"Christmas Day 2025. Dinner at Hard Rock Cafe in Tejon."</p>
+        </div>
+
+        <div class="post-card reveal" style="transition-delay:0.60s">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+            <span class="text-amber-400 text-xs font-medium">Three Kings 2026</span>
+          </div>
+          <p class="font-display italic text-stone-200 text-lg leading-relaxed">"Three Kings 2026. St. Rita Catholic Church in Tulare, CA."</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO SHE IS -->
+  <section class="py-24 bg-stone-950/70">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <p class="text-amber-400 text-sm font-medium tracking-widest uppercase mb-3">The Pillars</p>
+        <h2 class="font-display text-5xl md:text-6xl font-bold text-stone-100 mb-6">What Makes Elena, Elena</h2>
+        <div class="w-16 h-px bg-amber-500/40 mx-auto"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <div class="stat-card reveal" style="transition-delay:0.05s">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </div>
+          <h3 class="text-lg font-semibold text-stone-100 mb-2">Faith</h3>
+          <p class="text-stone-400 text-sm leading-relaxed">St. Rita Catholic Church, Tulare. Wednesday night prayer meetings. The gift of the Holy Spirit frames her walls. Christ frames her life.</p>
+        </div>
+
+        <div class="stat-card reveal" style="transition-delay:0.10s">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <h3 class="text-lg font-semibold text-stone-100 mb-2">Family</h3>
+          <p class="text-stone-400 text-sm leading-relaxed">Husband Bob. Children and grandchildren: Joshua, Ava, River, Olive. Thanksgiving with the big happy family. Always present. Always showing up.</p>
+        </div>
+
+        <div class="stat-card reveal" style="transition-delay:0.15s">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+          </div>
+          <h3 class="text-lg font-semibold text-stone-100 mb-2">Roots</h3>
+          <p class="text-stone-400 text-sm leading-relaxed">Born in Manila. Educated at Saint Paul University QC. Still gathering with BSC classmates in 2026. She never left those roots behind.</p>
+        </div>
+
+        <div class="stat-card reveal" style="transition-delay:0.20s">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          </div>
+          <h3 class="text-lg font-semibold text-stone-100 mb-2">Friendship</h3>
+          <p class="text-stone-400 text-sm leading-relaxed">Angela Ledbetter. 300 friends. Old friends from West Covina and Diamond Bar. People who have known her for decades still call her one of their closest.</p>
+        </div>
+
+        <div class="stat-card reveal" style="transition-delay:0.25s">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.708 2.708 0 01-3 0 2.708 2.708 0 00-3 0 2.708 2.708 0 01-3 0 2.708 2.708 0 00-3 0 2.708 2.708 0 01-3 0A1.994 1.994 0 003 15.546V8.536a1 1 0 01.8-.98l9-2a1 1 0 01.4 0l9 2a1 1 0 01.8.98v7.01z"/></svg>
+          </div>
+          <h3 class="text-lg font-semibold text-stone-100 mb-2">Food</h3>
+          <p class="text-stone-400 text-sm leading-relaxed">Tiramisu is her birthday cake. Boneless Crispy Pata and Steamed Pampano with classmates in Manila. La Piazza Italian in Tulare. Hard Rock Cafe on Christmas.</p>
+        </div>
+
+        <div class="stat-card reveal" style="transition-delay:0.30s">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+          </div>
+          <h3 class="text-lg font-semibold text-stone-100 mb-2">Service</h3>
+          <p class="text-stone-400 text-sm leading-relaxed">County of Tulare. A career built around serving her community. She brought the same dedication to work that she brings to everything else.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PHOTOS GALLERY -->
+  <section id="photos" class="py-24">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <p class="text-amber-400 text-sm font-medium tracking-widest uppercase mb-3">Through the Years</p>
+        <h2 class="font-display text-5xl md:text-6xl font-bold text-stone-100 mb-6">Photo Gallery</h2>
+        <div class="w-16 h-px bg-amber-500/40 mx-auto"></div>
+        <p class="text-stone-400 mt-6">Click any photo to view it full size.</p>
+      </div>
+
+      <div class="photo-grid" id="photo-gallery"></div>
+    </div>
+  </section>
+
+  <!-- BIRTHDAY WISH CTA -->
+  <section class="py-32 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-amber-900/20 via-stone-900/40 to-amber-900/20"></div>
+    <div class="relative max-w-3xl mx-auto px-6 text-center reveal">
+      <p class="text-amber-400 text-sm font-medium tracking-widest uppercase mb-4">April 1, 2026</p>
+      <h2 class="font-display text-5xl md:text-7xl font-bold text-stone-100 mb-6">Happy 75th Birthday, Lola</h2>
+      <p class="text-stone-400 text-xl leading-relaxed mb-4">
+        75 years of grace. 75 years of faith. 75 years of love poured out on every person in your life.
+      </p>
+      <p class="font-display italic text-amber-300/90 text-2xl">
+        We love you more than words can say.
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-stone-800/60 py-10">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="font-display text-xl gold-text">Elena Ortencio Dejesus-Souza</p>
+      <p class="text-stone-500 text-sm">April 1, 1951 &mdash; 75 Years of Grace</p>
+      <p class="text-stone-600 text-sm">Made with love by her family</p>
+    </div>
+  </footer>
+
+  <!-- AOS -->
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    // Scroll-aware navbar
+    (function() {
+      var nav = document.getElementById('navbar');
+      window.addEventListener('scroll', function() {
+        var y = window.scrollY;
+        var nearBottom = y + window.innerHeight >= document.documentElement.scrollHeight - 200;
+        var visible = y > 80 && !nearBottom;
+        nav.style.transform = visible ? 'translateY(0)' : 'translateY(-100%)';
+        nav.style.opacity = visible ? '1' : '0';
+      }, { passive: true });
+    })();
+
+    // Reveal on scroll
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+
+    // Lightbox
+    function openLightbox(src) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
+
+    // Populate photo gallery
+    var photos = [
+      'images/071_487239469_3629487270687944_8316863897215875711_n.jpg',
+      'images/085_634831103_10163672959438912_2774520005342656922_n.jpg',
+      'images/007_603921177_3868974266739242_9101934977079879009_n.jpg',
+      'images/003_493606877_3656457561324248_5966137836989532371_n.jpg',
+      'images/025_660374748_3959640984339236_4826847005298686982_n.jpg',
+      'images/043_661015324_3959641021005899_1513635274944992612_n.jpg',
+      'images/048_634437043_10163672958393912_7804049476834856118_n.jpg',
+      'images/018_590295450_3851331688503500_9104850802198762205_n.jpg',
+      'images/065_598032650_3859440831025919_4912218634072208526_n.jpg',
+      'images/064_662355280_3959637034339631_1825359309339738912_n.jpg',
+      'images/077_658939681_3959636997672968_8916685244699249917_n.jpg',
+      'images/099_624580343_3903802999923035_7909305753228257857_n.jpg',
+      'images/103_625141251_3903802776589724_3823231430195374895_n.jpg',
+      'images/104_624486179_3903802829923052_2973770412380503039_n.jpg',
+      'images/106_481208574_3604884406481564_7289997087911079623_n.jpg',
+      'images/123_662564654_3959641047672563_9220719897305946514_n.jpg',
+      'images/127_624116523_3905475219755813_7359735888728436147_n.jpg',
+      'images/128_590149861_3849180745385261_2097027968465262095_n.jpg',
+      'images/129_659690137_3959636961006305_8192492234955120731_n.jpg',
+      'images/130_605135585_3872395049730497_1979667322713092024_n.jpg',
+      'images/131_589904644_3849180722051930_2443361202729665762_n.jpg',
+      'images/132_590356775_3851309671839035_5116609218616204482_n.jpg',
+      'images/135_591167083_18548279467005248_7039042178123020734_n.jpg',
+      'images/139_634709126_10163672958403912_4128338864493532384_n.jpg',
+    ];
+
+    var gallery = document.getElementById('photo-gallery');
+    photos.forEach(function(src, i) {
+      var div = document.createElement('div');
+      div.className = 'photo-item';
+      div.style.animationDelay = (i * 0.05) + 's';
+      var img = document.createElement('img');
+      img.src = src;
+      img.alt = 'Elena - photo ' + (i + 1);
+      img.loading = 'lazy';
+      img.onerror = function() { div.remove(); };
+      div.appendChild(img);
+      div.onclick = function() { openLightbox(src); };
+      gallery.appendChild(div);
+    });
+  </script>
+</body>
+</html>

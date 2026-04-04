@@ -1443,7 +1443,12 @@ fetch('captions.json')
   .then(function(r) { return r.json(); })
   .catch(function() { return {}; })
   .then(function(caps) {
-    photos.forEach(function(src) {
+    var sorted = photos.slice().sort(function(a, b) {
+      var aHas = !!(caps[a.split('/').pop()] && caps[a.split('/').pop()].caption);
+      var bHas = !!(caps[b.split('/').pop()] && caps[b.split('/').pop()].caption);
+      return (bHas ? 1 : 0) - (aHas ? 1 : 0);
+    });
+    sorted.forEach(function(src) {
       var filename = src.split('/').pop();
       var d = document.createElement('div');
       d.className = 'masonry-item';

@@ -58,7 +58,7 @@
     #hero-img {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
-      object-fit: cover; object-position: center 8%;
+      object-fit: cover; object-position: center 45%;
     }
     #hero-overlay {
       position: absolute; inset: 0;
@@ -206,17 +206,26 @@
     /* ── PHOTOS ── */
     #photos { background: var(--stone); }
     .masonry {
-      columns: 4; column-gap: 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
     }
     .masonry-item {
-      break-inside: avoid; margin-bottom: 14px;
       border-radius: 12px; overflow: hidden;
       border: 1px solid rgba(255,255,255,0.06);
       cursor: pointer; position: relative;
       transition: transform 0.25s ease;
+      aspect-ratio: 1 / 1;
+      background: #111;
+      opacity: 0;
+      transition: opacity 0.35s ease, transform 0.25s ease;
     }
+    .masonry-item.loaded { opacity: 1; }
     .masonry-item:hover { transform: scale(1.015); }
-    .masonry-item img { display: block; width: 100%; }
+    .masonry-item img {
+      display: block; width: 100%; height: 100%;
+      object-fit: cover;
+    }
     .masonry-item::after {
       content: ''; position: absolute; inset: 0;
       background: linear-gradient(to top, rgba(8,7,5,0.3), transparent);
@@ -305,7 +314,7 @@
       .quotes-grid { grid-template-columns: 1fr; }
       .quote-card.featured { grid-column: span 1; }
       .pillars-grid { grid-template-columns: repeat(2, 1fr); }
-      .masonry { columns: 3; }
+      .masonry { grid-template-columns: repeat(3, 1fr); }
     }
     @media (max-width: 640px) {
       section { padding: 72px 24px; }
@@ -315,7 +324,7 @@
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
       .stat { padding: 32px 24px; }
       .pillars-grid { grid-template-columns: 1fr; }
-      .masonry { columns: 2; }
+      .masonry { grid-template-columns: repeat(2, 1fr); }
       footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
     }
   </style>
@@ -1454,7 +1463,8 @@ fetch('captions.json')
       d.className = 'masonry-item';
       var img = document.createElement('img');
       img.src = src; img.loading = 'lazy'; img.alt = 'Elena';
-      img.onerror = function() { d.remove(); };
+      img.onload = function() { d.classList.add('loaded'); };
+      img.onerror = function() { d.classList.add('loaded'); };
       d.onclick = function() { openLb(src); };
       d.appendChild(img);
       if (caps[filename] && caps[filename].caption) {
